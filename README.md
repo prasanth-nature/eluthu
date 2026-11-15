@@ -179,6 +179,19 @@ Already present on a GNOME Workstation install.
 | 4 | Settings → Keyboard → Input Sources → add **Tamil (custom)** |
 | 5 | Type `az sx sz` → க சி ச் |
 
+**If step 3 reports `Permission denied`:** the installer file may not have its executable permission in your local checkout. From inside the repository, run:
+
+```bash
+chmod +x install.sh
+./install.sh --add-source
+```
+
+Alternatively, run the script through Bash without changing its file permission:
+
+```bash
+bash install.sh --add-source
+```
+
 ### Installer flags
 
 | Flag | Effect |
@@ -220,6 +233,7 @@ Run this first — it checks all eight things that can break:
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
+| `./install.sh: Permission denied` | Installer file is not executable in the local checkout | `chmod +x install.sh && ./install.sh --add-source`, or `bash install.sh --add-source` |
 | `ibus list-engine` does not show `tamil-custom` | component is in `~/.local/share/ibus/component`, which IBus never scans | `sudo install -m 644 ~/.local/share/ibus/component/tamil-custom.xml /usr/share/ibus/component/` then `rm -rf ~/.cache/ibus/bus/registry && ibus write-cache && ibus restart` |
 | Listed but typing does nothing | stale input-source entry | remove the source, `ibus restart`, add it again |
 | Entry reads `tamil-custom`, not **Tamil (custom)** | component and engine disagree on the D-Bus name | reinstall v1.1 or newer |
