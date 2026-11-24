@@ -7,7 +7,7 @@
 [![Input method](https://img.shields.io/badge/input%20method-IBus-green)](https://github.com/ibus/ibus)
 [![Tests](https://github.com/prasanth-nature/tamil-keyboard/actions/workflows/tests.yml/badge.svg)](https://github.com/prasanth-nature/tamil-keyboard/actions/workflows/tests.yml)
 
-![Tamil keyboard layout reference](Tamil%20Keyboard%20Layout%20Reference.png)
+![Tamil keyboard layout reference](Tamil_Keyboard_Layout_Reference.png)
 
 ---
 
