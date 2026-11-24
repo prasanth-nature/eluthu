@@ -100,7 +100,7 @@ for long: caps+uyir+mei;
 
 for: க+அ=க்(not existing grammar but orthographic)
 
-thats all nomore
+thats all no more
 
 ## previous problem
 
