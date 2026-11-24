@@ -1,11 +1,13 @@
-# தமிழ் விசைப்பலகை · Tamil Keyboard Layout
+# Tamil Keyboard Ezhu · தமிழ் விசைப்பலகை
 
-**A custom Tamil IBus input method for AlmaLinux, RHEL, Fedora, Debian. It uses a dedicated alphabet-based composition map rather than Tamil99.**
+**A Tamil keyboard layout for Linux whose key positions follow the Tamil orthographical order instead of a Latin transliteration. Delivered as an IBus input method for AlmaLinux, RHEL, Fedora and Debian.**
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Platform](https://img.shields.io/badge/platform-AlmaLinux%20%7C%20RHEL%20%7C%20Fedora-informational)](https://almalinux.org)
+[![Platform](https://img.shields.io/badge/platform-AlmaLinux%20%7C%20RHEL%20%7C%20Fedora%20%7C%20Debian-informational)](https://almalinux.org)
 [![Input method](https://img.shields.io/badge/input%20method-IBus-green)](https://github.com/ibus/ibus)
 [![Tests](https://github.com/prasanth-nature/tamil-keyboard/actions/workflows/tests.yml/badge.svg)](https://github.com/prasanth-nature/tamil-keyboard/actions/workflows/tests.yml)
+
+![Tamil keyboard layout reference](Tamil%20Keyboard%20Layout%20Reference.png)
 
 ---
 
@@ -13,131 +15,116 @@
 
 | § | Section |
 | --- | --- |
-| 1 | [What it is](#1--what-it-is) |
-| 1 | [own word](#my-own-word)
-| 2 | [Key map](#2--key-map) |
-| 3 | [How typing works](#3--how-typing-works) |
-| 4 | [மெய் + உயிர் table](#4--மெய்--உயிர்-table) |
-| 5 | [Caps Lock and Shift](#5--caps-lock-and-shift) |
-| 6 | [Install](#6--install) |
-| 7 | [Switching layouts](#7--switching-layouts) |
-| 8 | [Troubleshooting](#8--troubleshooting) |
-| 9 | [Why an IBus engine and not an XKB layout](#9--why-an-ibus-engine-and-not-an-xkb-layout) |
-| 10 | [Development](#10--development) |
-| 11 | [Repository layout](#11--repository-layout) |
-| 12 | [License](#12--license) |
+| 1 | [Overview](#1--overview) |
+| 2 | [Design](#2--design) |
+| 3 | [Key map](#3--key-map) |
+| 4 | [How typing works](#4--how-typing-works) |
+| 5 | [மெய் + உயிர் table](#5--மெய்--உயிர்-table) |
+| 6 | [Caps Lock and Shift](#6--caps-lock-and-shift) |
+| 7 | [Install](#7--install) |
+| 8 | [Switching layouts](#8--switching-layouts) |
+| 9 | [Troubleshooting](#9--troubleshooting) |
+| 10 | [Why an IBus engine and not an XKB layout](#10--why-an-ibus-engine-and-not-an-xkb-layout) |
+| 11 | [Development](#11--development) |
+| 12 | [Repository layout](#12--repository-layout) |
+| 13 | [Further reading](#13--further-reading) |
+| 14 | [License](#14--license) |
 
 ---
 
-## 1 · What it is
+## 1 · Overview
 
 | Item | Value |
 | --- | --- |
 | Engine id | `tamil-custom` |
 | Name in settings | **Tamil (custom)** — language `ta` |
 | Type | IBus input method |
-| Designed for | AlmaLinux 8 / 9 / 10, RHEL 8+, Fedora, and GNOME on Wayland or X11 |
+| Designed for | AlmaLinux 8 / 9 / 10, RHEL 8+, Fedora, Debian; GNOME on Wayland or X11 |
 | Packages needed | `ibus`, `ibus-libs`, `python3-gobject` |
 | Root needed | once — one file in `/usr/share/ibus/component/` |
 | Does not work in | plain TTY / console (IBus needs a graphical session) |
 | Visual reference | [`layout-chart.html`](layout-chart.html) |
 
-- The 26 QWERTY letter keys cover the 18 Tamil consonants, all 12 vowels, and ஃ; Shift adds ஸ, ஷ, ஜ, ஹ, க்ஷ, and a stand-alone pulli.
-- A consonant followed by a vowel key becomes one letter — no virama juggling.
-- Caps Lock is the long-vowel switch (நெடில்), alone or after a consonant.
-- The layout is data, not code: four dictionaries in [`src/tamil_core.py`](src/tamil_core.py).
+### Formal description
 
-## my own word
+> A Tamil keyboard layout in which key positions are derived from the Tamil orthographical order rather than from a phonetic mapping of the Latin alphabet. The 26 letter keys carry the 5 குறில் vowels, the 2 diphthongs, the 18 மெய் consonants and ஆய்தம், arranged left to right by alphabet and by இனம் (வல், இடை, மெல்). உயிர்மெய் letters are produced by composing a consonant with the following vowel key, and Caps Lock selects the நெடில் form.
 
-i want formal description
-how to descripe formally?
-
-## tamil keyboard ezhu
-
-done: https://github.com/prasanth-nature/tamil-keyboard
-
-it is based on tamil alphabet and grammar
-
-direct tamil entry
-
-all left to right
-
-26= 5 kuril(short vowel)+ 2 Diphthongs +18 mei(consonant) +1 ஃ (āytam)
-
-
-## uyir
-
-uyir: bottom;
-
-uyir kuril(short):  usual short;
-
-uyir nedil(long): caps+short=long;
-
-bottom: n,m for ஐ,ஔ;
-
-all are alphabet order from left to right
-
-
-## mei
-
-
-mei val 6(hard): left to right mid;
-
-mei idai(between hard and soft) is as between val and mel: 3 mid with val, 3 top with mel;
-
-mei mel(soft): 6 on top;
-
-last p for akkenam;
-
-all are by sound from left
-
-
-## uyir mei
-
-as per tamil grammar: uyir+mei;
-
-for long: caps+uyir+mei;
-
-for: க+அ=க்(not existing grammar but orthographic)
-
-thats all no more
-
-## previous problem
-
-keymap order hard to find or memorize;
-
-## now 
-
-everyone do type in tamil just after read tamil alphabet letter system.
-
-## note
-
-i said what to do, sarvam indus done it, checked by ChatGPT
-
-## refer 
-
-for tamil script
-
-Tamil script - Wikipedia
-https://en.wikipedia.org/wiki/Tamil_script
-
-## ChatGPT
-
-- The project name used in the document is **Tamil Keyboard Ezhu**.
-- Its design is based on the **Tamil alphabet and grammar**.
-- The 26 base keys represent:
-  - 5 குறில் உயிரெழுத்துகள்
-  - 2 diphthongs: ஐ, ஔ
-  - 18 மெய்யெழுத்துகள்
-  - 1 ஆய்த எழுத்து: ஃ
-- Uyir letters are arranged at the bottom.
-- Mei letters are arranged according to வல்லினம், இடையினம் and மெல்லினம்.
-- Uyirmei letters are generated through the grammatical relationship between Uyir and Mei.
-- Typing proceeds from left to right.
+| Property | Detail |
+| --- | --- |
+| Basis | Tamil alphabet and grammar |
+| Entry | direct Tamil letters — no transliteration step |
+| Direction | all left to right |
+| Key count | 26 = 5 குறில் + 2 diphthongs + 18 மெய் + 1 ஆய்தம் |
+| Composition | உயிர் + மெய் combine into one letter |
 
 ---
 
-## 2 · Key map
+## 2 · Design
+
+### 2.1 உயிர் (vowels)
+
+| Key | Letter | Class |
+| --- | --- | --- |
+| `z` | அ | குறில் (short) |
+| `x` | இ | குறில் |
+| `c` | உ | குறில் |
+| `v` | எ | குறில் |
+| `b` | ஒ | குறில் |
+| `n` | ஐ | diphthong |
+| `m` | ஔ | diphthong |
+
+| Rule | Detail |
+| --- | --- |
+| Row | bottom row |
+| Order | alphabet order, left to right: அ இ உ எ ஒ, then ஐ ஔ |
+| குறில் | the plain letter |
+| நெடில் (long) | Caps Lock + the same key |
+| ஐ ஔ | the last two keys of the row, `n` and `m` |
+
+### 2.2 மெய் (consonants)
+
+| இனம் | Count | Letters | Keys | Position |
+| --- | --- | --- | --- | --- |
+| வல்லினம் (hard) | 6 | க ச ட த ப ற | `a s d f g h` | home row, left to right |
+| இடையினம் (middle) | 3 | ய ர ல | `j k l` | home row, with வல் |
+| இடையினம் (middle) | 3 | வ ழ ள | `q w e` | top row, with மெல் |
+| மெல்லினம் (soft) | 6 | ங ஞ ண ந ம ன | `r t y u i o` | top row |
+| ஆய்தம் | 1 | ஃ | `p` | top row, last key |
+
+| Rule | Detail |
+| --- | --- |
+| வல் | six hard consonants along the middle row |
+| இடை | placed between வல் and மெல் by sound: three with வல், three with மெல் |
+| மெல் | six soft consonants across the top row |
+| ஆய்தம் | one key, the last key of the top row |
+| Order | by sound, from the left |
+
+### 2.3 உயிர்மெய் (consonant + vowel)
+
+| Rule | Detail |
+| --- | --- |
+| Grammar | உயிர் + மெய் combine into a single letter |
+| Typing | consonant key first, vowel key second |
+| Long form | Caps Lock on, then the same vowel key |
+| Orthographic case | க + அ = க் — the pulli is orthographic, not grammatical |
+| Result | one letter; the vowel is never left standing |
+
+### 2.4 Why this ordering
+
+| | Conventional key maps | This layout |
+| --- | --- | --- |
+| Key order | arbitrary, or mapped to Latin sounds | Tamil alphabet order |
+| Learning | memorise a lookup table | recite the alphabet |
+| Finding a letter | search the chart | count along the row |
+| Grouping | none | வல் / இடை / மெல் kept together |
+| Entry | transliteration | direct Tamil |
+
+- The previous problem: key-map order was hard to find and hard to memorise.
+- Now anyone who can read the Tamil alphabet can type: follow the letter system, not a table.
+
+---
+
+## 3 · Key map
 
 | Row | Physical keys | Tamil |
 | --- | --- | --- |
@@ -176,7 +163,7 @@ https://en.wikipedia.org/wiki/Tamil_script
 
 ---
 
-## 3 · How typing works
+## 4 · How typing works
 
 | # | Rule | Example |
 | --- | --- | --- |
@@ -193,7 +180,7 @@ https://en.wikipedia.org/wiki/Tamil_script
 
 ---
 
-## 4 · மெய் + உயிர் table
+## 5 · மெய் + உயிர் table
 
 White = normal key. **Bold** = Caps Lock on.
 
@@ -222,7 +209,7 @@ Every cell above is asserted in [`tests/test_tamil_core.py`](tests/test_tamil_co
 
 ---
 
-## 5 · Caps Lock and Shift
+## 6 · Caps Lock and Shift
 
 | Short | Long (Caps) | Sign after a consonant |
 | --- | --- | --- |
@@ -243,12 +230,12 @@ Every cell above is asserted in [`tests/test_tamil_core.py`](tests/test_tamil_co
 | `g` | ஹ |
 | `z` | ் (stand-alone pulli) |
 
-- ஷ ஸ ஜ ஹ க்ஷ had no keys in the original design, so they sit on the Shift layer of the phonetically closest keys.
+- ஷ ஸ ஜ ஹ க்ஷ have no letter of their own in the 26-key map, so they sit on the Shift layer of the phonetically closest keys.
 - Move them by editing `SHIFT` in [`src/tamil_core.py`](src/tamil_core.py).
 
 ---
 
-## 6 · Install
+## 7 · Install
 
 ### Requirements
 
@@ -268,14 +255,14 @@ Already present on a GNOME Workstation install.
 | 4 | Settings → Keyboard → Input Sources → add **Tamil (custom)** |
 | 5 | Type `az sx sz` → க சி ச் |
 
-**If step 3 reports `Permission denied`:** the installer file may not have its executable permission in your local checkout. From inside the repository, run:
+**If step 3 reports `Permission denied`:** the installer has lost its executable bit in your checkout.
 
 ```bash
 chmod +x install.sh
 ./install.sh --add-source
 ```
 
-Alternatively, run the script through Bash without changing its file permission:
+Or run it through Bash without changing the file permission:
 
 ```bash
 bash install.sh --add-source
@@ -302,7 +289,7 @@ bash install.sh --add-source
 
 ---
 
-## 7 · Switching layouts
+## 8 · Switching layouts
 
 | Action | How |
 | --- | --- |
@@ -312,9 +299,9 @@ bash install.sh --add-source
 
 ---
 
-## 8 · Troubleshooting
+## 9 · Troubleshooting
 
-Run this first — it checks all eight things that can break:
+Run this first — it checks everything that can break:
 
 ```bash
 ./doctor.sh
@@ -322,7 +309,7 @@ Run this first — it checks all eight things that can break:
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
-| `./install.sh: Permission denied` | Installer file is not executable in the local checkout | `chmod +x install.sh && ./install.sh --add-source`, or `bash install.sh --add-source` |
+| `./install.sh: Permission denied` | installer is not executable in the checkout | `chmod +x install.sh && ./install.sh --add-source`, or `bash install.sh --add-source` |
 | `ibus list-engine` does not show `tamil-custom` | component is in `~/.local/share/ibus/component`, which IBus never scans | `sudo install -m 644 ~/.local/share/ibus/component/tamil-custom.xml /usr/share/ibus/component/` then `rm -rf ~/.cache/ibus/bus/registry && ibus write-cache && ibus restart` |
 | Listed but typing does nothing | stale input-source entry | remove the source, `ibus restart`, add it again |
 | Entry reads `tamil-custom`, not **Tamil (custom)** | component and engine disagree on the D-Bus name | reinstall v1.1 or newer |
@@ -336,23 +323,23 @@ Engine log: `~/.cache/tamil-custom/engine.log`.
 
 ---
 
-## 9 · Why an IBus engine and not an XKB layout
+## 10 · Why an IBus engine and not an XKB layout
 
 | Option | Verdict |
 | --- | --- |
 | XKB symbols file | cannot do it — a keypress must be remembered and combined with the next one (ச + இ → சி); XKB has no state machine |
 | Compose file + dead keys | one dead key per consonant would need 18 custom keysyms, and Caps Lock as a long-vowel modifier still would not work |
-| IBus engine (this repo) | full state machine, Caps Lock aware, ~150 lines of layout data plus a thin engine |
+| IBus engine (this project) | full state machine, Caps Lock aware, ~150 lines of layout data plus a thin engine |
 
 ---
 
-## 10 · Development
+## 11 · Development
 
 | Task | Command |
 | --- | --- |
 | Run the layout test suite (183 checks) | `python3 tests/test_tamil_core.py` |
 | Engine self-test (no IBus needed) | `python3 src/ibus-engine-tamil-custom --selftest` |
-| Validate component metadata (6 checks) | `python3 tests/test_component.py` |
+| Validate component metadata | `python3 tests/test_component.py` |
 | Check shell script syntax | `bash -n install.sh && bash -n uninstall.sh && bash -n doctor.sh` |
 | Regenerate the visual chart | `python3 tools/build_chart.py` |
 | Diagnose a live install | `./doctor.sh` |
@@ -368,17 +355,17 @@ Engine log: `~/.cache/tamil-custom/engine.log`.
 
 - After editing: `./install.sh && ibus restart`.
 - `layout-chart.html` is generated from the same code, so it cannot drift.
-- CI runs the layout, engine, and component checks; it also checks shell syntax and fails if the committed chart is out of date.
+- CI runs the layout, engine and component checks, checks shell syntax, and fails if the committed chart is out of date.
 
 ---
 
-## 11 · Repository layout
+## 12 · Repository layout
 
 | Path | Purpose |
 | --- | --- |
 | `install.sh` | installer |
 | `uninstall.sh` | remover |
-| `doctor.sh` | 8-section diagnosis for "listed but does not type" |
+| `doctor.sh` | diagnosis for "listed but does not type" |
 | `component/tamil-custom.xml.in` | IBus component template |
 | `src/tamil_core.py` | all layout rules, no IBus dependency |
 | `src/ibus-engine-tamil-custom` | the IBus engine |
@@ -386,11 +373,22 @@ Engine log: `~/.cache/tamil-custom/engine.log`.
 | `tests/test_component.py` | validates component XML identifiers and version against the engine |
 | `tools/build_chart.py` | generates `layout-chart.html` |
 | `layout-chart.html` | visual key map |
+| `Tamil Keyboard Layout Reference.png` | keyboard reference image |
 | `.github/workflows/tests.yml` | CI |
 
 ---
 
-## 12 · License
+## 13 · Further reading
+
+| Topic | Source |
+| --- | --- |
+| Tamil script | [Wikipedia — Tamil script](https://en.wikipedia.org/wiki/Tamil_script) |
+| உயிர், மெய், உயிர்மெய் | Tamil grammar, எழுத்தியல் |
+| IBus | [github.com/ibus/ibus](https://github.com/ibus/ibus) |
+
+---
+
+## 14 · License
 
 MIT — see [LICENSE](LICENSE).
 
