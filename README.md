@@ -114,6 +114,13 @@ everyone do type in tamil just after read tamil alphabet letter system.
 
 i said what to do, sarvam indus done it, checked by ChatGPT
 
+## refer 
+
+for tamil script
+
+Tamil script - Wikipedia
+https://en.wikipedia.org/wiki/Tamil_script
+
 ---
 
 ## 2 · Key map
