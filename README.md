@@ -61,6 +61,8 @@
 
 ## 2 · Design
 
+from bottom left to top
+
 - prime short vowel 5 + diphthong 2 +prime consonant 18 +1 aytam ஃ
 - long vowels are related by 2 of its short.
 
