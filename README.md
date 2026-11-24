@@ -121,6 +121,20 @@ for tamil script
 Tamil script - Wikipedia
 https://en.wikipedia.org/wiki/Tamil_script
 
+## ChatGPT
+
+- The project name used in the document is **Tamil Keyboard Ezhu**.
+- Its design is based on the **Tamil alphabet and grammar**.
+- The 26 base keys represent:
+  - 5 குறில் உயிரெழுத்துகள்
+  - 2 diphthongs: ஐ, ஔ
+  - 18 மெய்யெழுத்துகள்
+  - 1 ஆய்த எழுத்து: ஃ
+- Uyir letters are arranged at the bottom.
+- Mei letters are arranged according to வல்லினம், இடையினம் and மெல்லினம்.
+- Uyirmei letters are generated through the grammatical relationship between Uyir and Mei.
+- Typing proceeds from left to right.
+
 ---
 
 ## 2 · Key map
