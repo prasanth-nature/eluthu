@@ -1,4 +1,4 @@
-# Tamil Keyboard Ezhu · தமிழ் விசைப்பலகை
+# Tamil Keyboard Eluthu · தமிழ் விசைப்பலகை
 
 **A Tamil keyboard layout for Linux whose key positions follow the Tamil orthographical order instead of a Latin transliteration. Delivered as an IBus input method for AlmaLinux, RHEL, Fedora and Debian.**
 
