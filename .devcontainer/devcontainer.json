@@ -1,0 +1,5 @@
+{
+  "name": "eluthu",
+  "image": "mcr.microsoft.com/devcontainers/base:debian",
+  "postCreateCommand": "python3 --version && python3 tests/test_tamil_core.py"
+}
