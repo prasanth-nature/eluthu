@@ -9,6 +9,11 @@
 
 ![Tamil keyboard layout reference](Tamil_Keyboard_Layout_Reference.png)
 
+## colored
+
+![Tamil keyboard layout color reference](Tamil_Keyboard_Layout_Color_Reference.png)
+
+
 ---
 
 ## Table of contents
