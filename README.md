@@ -61,6 +61,9 @@
 
 ## 2 · Design
 
+- prime short vowel 5 + prime consonant 18 + diphthong 2 + 1 aytam ஃ
+- long vowels are related by 2 of its short.
+
 ### 2.1 உயிர் (vowels)
 
 | Key | Letter | Class |
