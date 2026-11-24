@@ -77,7 +77,7 @@
 | --- | --- |
 | Row | bottom row |
 | Order | alphabet order, left to right: அ இ உ எ ஒ, then ஐ ஔ |
-| குறில் | the plain letter |
+| குறில் | the prime short letter |
 | நெடில் (long) | Caps Lock + the same key |
 | ஐ ஔ | the last two keys of the row, `n` and `m` |
 
