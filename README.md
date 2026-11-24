@@ -71,7 +71,7 @@ uyir: bottom;
 
 uyir kuril(short):  usual short;
 
-uyir nedil(long): shift+short=long;
+uyir nedil(long): caps+short=long;
 
 bottom: n,m for ஐ,ஔ;
 
@@ -96,7 +96,7 @@ all are by sound from left
 
 as per tamil grammar: uyir+mei;
 
-for long: shift+uyir+mei;
+for long: caps+uyir+mei;
 
 for: க+அ=க்(not existing grammar but orthographic)
 
