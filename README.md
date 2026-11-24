@@ -1,6 +1,6 @@
 # தமிழ் விசைப்பலகை · Tamil Keyboard Layout
 
-**A custom Tamil IBus input method for AlmaLinux, RHEL, and Fedora. It uses a dedicated QWERTY-based composition map rather than Tamil99.**
+**A custom Tamil IBus input method for AlmaLinux, RHEL, Fedora, Debian. It uses a dedicated alphabet-based composition map rather than Tamil99.**
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-AlmaLinux%20%7C%20RHEL%20%7C%20Fedora-informational)](https://almalinux.org)
@@ -14,6 +14,7 @@
 | § | Section |
 | --- | --- |
 | 1 | [What it is](#1--what-it-is) |
+| 1 | [own word](#my-own-word)
 | 2 | [Key map](#2--key-map) |
 | 3 | [How typing works](#3--how-typing-works) |
 | 4 | [மெய் + உயிர் table](#4--மெய்--உயிர்-table) |
@@ -45,6 +46,73 @@
 - A consonant followed by a vowel key becomes one letter — no virama juggling.
 - Caps Lock is the long-vowel switch (நெடில்), alone or after a consonant.
 - The layout is data, not code: four dictionaries in [`src/tamil_core.py`](src/tamil_core.py).
+
+## my own word
+
+i want formal description
+how to descripe formally?
+
+## tamil keyboard ezhu
+
+done: https://github.com/prasanth-nature/tamil-keyboard
+
+it is based on tamil alphabet and grammar
+
+direct tamil entry
+
+all left to right
+
+26= 5 kuril(short vowel)+ 2 Diphthongs +18 mei(consonant) +1 ஃ (āytam)
+
+
+## uyir
+
+uyir: bottom;
+
+uyir kuril(short):  usual short;
+
+uyir nedil(long): shift+short=long;
+
+bottom: n,m for ஐ,ஔ;
+
+all are alphabet order from left to right
+
+
+## mei
+
+
+mei val 6(hard): left to right mid;
+
+mei idai(between hard and soft) is as between val and mel: 3 mid with val, 3 top with mel;
+
+mei mel(soft): 6 on top;
+
+last p for akkenam;
+
+all are by sound from left
+
+
+## uyir mei
+
+as per tamil grammar: uyir+mei;
+
+for long: shift+uyir+mei;
+
+for: க+அ=க்(not existing grammar but orthographic)
+
+thats all nomore
+
+## previous problem
+
+keymap order hard to find or memorize;
+
+## now 
+
+everyone do type in tamil just after read tamil alphabet letter system.
+
+## note
+
+i said what to do, sarvam indus done it, checked by ChatGPT
 
 ---
 
