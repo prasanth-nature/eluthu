@@ -104,46 +104,34 @@ def build_engine_class(IBus):
                 return False
 
             if step.discard:
-                self._clear_preedit()
+                # the short form is already committed: take it back, put the long one
+                self._replace_last(1, step.text)
             elif step.flush:
                 self._commit_preedit()
-
-            if step.preedit:
-                self._show_preedit(step.text)
+                self.commit_text(IBus.Text.new_from_string(step.text))
             else:
                 self.commit_text(IBus.Text.new_from_string(step.text))
             return True
 
-        # -- preedit helpers -------------------------------------------------
-        def _show_preedit(self, text):
-            """Hold a vowel so the same key again can promote it to long."""
-            self._preedit = text
+        # -- helpers ---------------------------------------------------------
+        def _replace_last(self, count, text):
+            """Remove the last ``count`` characters, then commit ``text``.
+
+            Used for the doubling rule: the short vowel is already in the
+            document, so it has to be taken back before the long one goes in.
+            """
             try:
-                self.update_preedit_string(
-                    IBus.Text.new_from_string(text), len(text), True)
+                self.delete_surrounding_text(-count, count)
+                self._deleted = True
             except Exception:
-                # no preedit support: commit now, doubling then appends
-                self._preedit = ""
-                self.commit_text(IBus.Text.new_from_string(text))
+                log("delete_surrounding_text unavailable; the long form is appended")
+            self.commit_text(IBus.Text.new_from_string(text))
 
         def _commit_preedit(self):
             if not self._preedit:
                 return
             text, self._preedit = self._preedit, ""
-            try:
-                self.update_preedit_string(
-                    IBus.Text.new_from_string(""), 0, False)
-            except Exception:
-                pass
             self.commit_text(IBus.Text.new_from_string(text))
-
-        def _clear_preedit(self):
-            self._preedit = ""
-            try:
-                self.update_preedit_string(
-                    IBus.Text.new_from_string(""), 0, False)
-            except Exception:
-                pass
 
         # -- housekeeping ---------------------------------------------------
         def do_focus_out(self):
