@@ -262,7 +262,7 @@ Already present on a GNOME Workstation install.
 | 1 | `git clone https://github.com/prasanth-nature/tamil-keyboard.git` |
 | 2 | `cd tamil-keyboard` |
 | 3 | `./install.sh --add-source` — asks for your password once |
-| 4 | Settings → Keyboard → Input Sources → add **Tamil (custom)** |
+| 4 | Settings → Keyboard → Input Sources → add **eluthu** |
 | 5 | Type `az sx sz` → க சி ச் |
 
 **If step 3 reports `Permission denied`:** the installer has lost its executable bit in your checkout.
