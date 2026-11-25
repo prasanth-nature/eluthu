@@ -6,8 +6,8 @@
 set -uo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ENGINE_NAME="tamil-custom"
-BUS_NAME="org.local.IBus.TamilCustom"
+ENGINE_NAME="eluthu"
+BUS_NAME="org.local.IBus.Eluthu"
 ENGINE="${HOME}/.local/share/tamil-keyboard/ibus-engine-tamil-custom"
 [ -x "/usr/local/share/tamil-keyboard/ibus-engine-tamil-custom" ] && \
   ENGINE="/usr/local/share/tamil-keyboard/ibus-engine-tamil-custom"

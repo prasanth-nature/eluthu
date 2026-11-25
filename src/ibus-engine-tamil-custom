@@ -25,9 +25,9 @@ if HERE not in sys.path:
 from tamil_core import Composer  # noqa: E402
 
 VERSION = "1.2"
-ENGINE_NAME = "tamil-custom"
+ENGINE_NAME = "eluthu"
 # keep in sync with <name> in component/tamil-custom.xml.in
-BUS_NAME = "org.local.IBus.TamilCustom"
+BUS_NAME = "org.local.IBus.Eluthu"
 
 LOG_PATH = os.path.expanduser(os.path.join("~", ".cache", "tamil-custom", "engine.log"))
 
