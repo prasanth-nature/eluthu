@@ -3,7 +3,7 @@
   <name>org.local.IBus.Eluthu</name>
   <description>Tamil custom keyboard layout</description>
   <exec>@ENGINE_EXEC@</exec>
-  <version>1.3.0</version>
+  <version>1.5.0</version>
   <author>Prasanth K</author>
   <license>MIT</license>
   <homepage>https://github.com/ibus/ibus/wiki</homepage>

@@ -82,7 +82,10 @@ def run(keys, caps=False, shift=False):
             state |= ModifierType.LOCK_MASK
         if shift:
             state |= ModifierType.SHIFT_MASK
-        handled = engine.do_process_key_event(ord(ch), 0, state)
+        if ch == "\b":
+            handled = engine.do_process_key_event(0xFF08, 0, state)
+        else:
+            handled = engine.do_process_key_event(ord(ch), 0, state)
         for op in engine.ops:
             if op[0] == "commit":
                 document.append(op[1])
@@ -90,7 +93,11 @@ def run(keys, caps=False, shift=False):
                 document.pop()
         engine.ops = []
         if not handled:
-            document.append(ch)
+            if ch == "\b":
+                if document:          # the application deletes the character
+                    document.pop()
+            else:
+                document.append(ch)
     return "".join(document)
 
 
@@ -120,6 +127,12 @@ check("zzz", run("zzz"), "ஆஅ")
 
 # pass-through
 check("space", run("a z"), "க அ")
+
+# backspace frees the consonant
+check("az<bs>z", run("az\bz"), "க்")
+check("sx<bs>c", run("sx\bc"), "சு")
+check("az<bs>", run("az\b"), "க")
+check("azz<bs>z", run("azz\bz"), "கா")
 check("digits", run("1a"), "1க")
 
 # delete must actually be used for the doubling

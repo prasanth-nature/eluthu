@@ -187,6 +187,8 @@ from bottom left to top
 | 8 | Space, digits, punctuation, arrows and Ctrl/Alt clear the pending consonant and pass through | `a` `space` `z` → க அ |
 | 9 | The **same short vowel twice** gives the long vowel | `z` `z` → ஆ · `a` `x` `x` → கீ · `e` `b` `b` → ளோ |
 | 10 | The virama doubles too, giving the long ஆ | `a` `z` `z` → கா |
+| 11 | **Backspace** on a short sign frees the consonant | `a` `z` `⌫` `z` → க் · `s` `x` `⌫` `c` → சு |
+| 12 | **Backspace** on a long sign keeps the long form available | `a` `z` `z` `⌫` `z` → கா · `s` `x` `x` `⌫` `x` → சீ |
 
 > `^` in this README means "Caps Lock is on" — it is not a key you press.
 

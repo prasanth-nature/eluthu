@@ -12,6 +12,21 @@ Versioning: [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   The previous workflow called the installed-system diagnostic and ignored its
   failure, so it did not actually test the repository template.
 
+## [1.5.0] — 2026-11-25
+
+### Changed
+
+- Backspace now distinguishes the two kinds of sign:
+  a deleted **short** sign frees the consonant (க + அ <bs> + அ = க்),
+  a deleted **long** sign keeps the long form available (க + அ + அ <bs> + அ = கா).
+
+## [1.4.0] — 2026-11-25
+
+### Added
+
+- Backspace after a vowel sign leaves the consonant bare, so the next vowel
+  attaches to it again: க + அ <bs> + அ = க், ச + இ <bs> + உ = சு.
+
 ## [1.3.0] — 2026-11-25
 
 ### Added

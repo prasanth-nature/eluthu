@@ -112,6 +112,19 @@ DOUBLE_CASES = [
 for keys, want in DOUBLE_CASES:
     check("double %s" % keys, type_text(keys), want)
 
+# ------------------------------------------------- backspace frees the consonant
+BACKSPACE_CASES = [
+    ("az\bz", "க்"),        # க அ <bs> அ
+    ("sx\bc", "சு"),        # ச இ <bs> உ
+    ("azz\bz", "கா"),       # a long sign keeps the long form available
+    ("sxx\bx", "சீ"),       # long sign again
+    ("sx\bx", "சி"),        # short sign, same vowel
+    ("az\b\bb", "ஒ"),      # two backspaces: the consonant is gone
+    ("az\b", "க"),          # plain delete
+]
+for keys, want in BACKSPACE_CASES:
+    check("backspace %s" % keys, type_text(keys), want)
+
 # ------------------------------------------------------------------ report
 if FAILS:
     print("\n".join(FAILS))

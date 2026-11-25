@@ -13,6 +13,8 @@ Model
 * Caps Lock   : long vowel (நெடில்).  Caps + அ -> ஆ, and after a
                 consonant it becomes the long sign: வ + Caps+அ -> வா
 * Shift       : grantha / rare letters (ஸ ஷ ஜ ஹ க்ஷ) and a lone virama.
+* Backspace    : deleting a sign leaves the consonant bare again, so the
+                next vowel attaches to it:  க அ <bs> அ -> க்,  ச இ <bs> உ -> சு
 * Doubling    : the same short vowel twice gives the long one.
                 அ + அ -> ஆ, இ + இ -> ஈ, க + இ + இ -> கீ, ள + ஒ + ஒ -> ளோ
                 The virama doubles too: க + அ + அ -> கா
@@ -142,10 +144,36 @@ class Composer(object):
     def __init__(self):
         self.pending = None  # consonant the next vowel sign may attach to
         self.held = None     # (key, short, long) currently sitting in preedit
+        # what was committed last: (key, short, long, consonant, is_long)
+        self.last = None
+        self.await_long = None  # (key, short, long) re-created by the same vowel
 
     def reset(self):
         self.pending = None
         self.held = None
+        self.last = None
+        self.await_long = None
+
+    def backspace(self):
+        """The application deleted one character.
+
+        Deleting a sign always leaves its consonant bare, so *any* vowel typed
+        next compounds with it:  க + அ <bs> + உ -> கு.
+
+        If the deleted sign was long, the same vowel brings the long form
+        back instead:  க + அ + அ <bs> + அ -> கா.
+        """
+        last, self.last = self.last, None
+        self.held = None
+
+        if last is None:
+            self.pending = None
+            self.await_long = None
+            return
+
+        key, short, long_form, consonant, is_long = last
+        self.pending = consonant
+        self.await_long = (key, short, long_form) if is_long else None
 
     # -- main entry point ---------------------------------------------------
     def feed(self, key, caps=False, shift=False):
@@ -155,17 +183,32 @@ class Composer(object):
         if not ("a" <= k <= "z"):
             return None
 
+        # --- a long sign was deleted: the same vowel re-creates it
+        if self.await_long is not None and k == self.await_long[0] and not shift:
+            _, short_a, long_a = self.await_long
+            consonant = self.pending
+            self.await_long = None
+            self.pending = None
+            self.last = (k, short_a, long_a, consonant, True)
+            return Step(discard=False, flush=True, text=long_a, preedit=False)
+
         # --- the same short vowel again: promote it to the long form
         if self.held is not None and k == self.held[0] and not shift:
             long_form = self.held[2]
+            key_h, short_h = self.held[0], self.held[1]
+            consonant = self.last[3] if self.last else None
             self.held = None
             self.pending = None
+            self.await_long = None
+            self.last = (key_h, short_h, long_form, consonant, True)
             return Step(discard=True, flush=False, text=long_form, preedit=False)
 
         # --- Shift layer: grantha letters and the lone virama
         if shift and k in SHIFT:
             out = SHIFT[k]
             self.held = None
+            self.last = None
+            self.await_long = None
             self.pending = None if out == VIRAMA else out
             return Step(discard=False, flush=True, text=out, preedit=False)
 
@@ -178,8 +221,11 @@ class Composer(object):
 
             if self.pending is not None:
                 # attach to the consonant: sign, long sign, or the virama
+                consonant = self.pending
                 sign = SIGNS[k][1 if want_long else 0]
                 self.pending = None
+                self.await_long = None
+                self.last = (k, SIGNS[k][0], SIGNS[k][1], consonant, bool(want_long))
                 if want_long:
                     # க + Caps அ = கா
                     self.held = None
@@ -187,6 +233,8 @@ class Composer(object):
                 self.held = (k, sign, SIGNS[k][1])
                 return Step(False, True, sign, True)
 
+            self.await_long = None
+            self.last = (k, INDEPENDENT[k][0], INDEPENDENT[k][1], None, bool(want_long))
             if want_long:
                 self.held = None
                 return Step(False, True, INDEPENDENT[k][1], False)
@@ -197,6 +245,8 @@ class Composer(object):
         # --- a consonant (or aytham, which nothing can attach to)
         out = BASE[k]
         self.held = None
+        self.last = None
+        self.await_long = None
         self.pending = None if out == AYTHAM else out
         return Step(False, True, out, False)
 
@@ -217,6 +267,11 @@ def type_text(keys, caps=False):
             continue
         if ch == "~":
             shift_state = not shift_state
+            continue
+        if ch == "\b":
+            composer.backspace()
+            if out:
+                out.pop()
             continue
         step = composer.feed(ch, caps=cap_state, shift=shift_state)
         if step is None:
