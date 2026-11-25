@@ -4,7 +4,7 @@
 set -euo pipefail
 
 APP="tamil-keyboard"
-ENGINE_NAME="tamil-custom"
+ENGINE_NAME="eluthu"
 COMPONENT_NAME="${ENGINE_NAME}.xml"
 SYSTEM_COMPONENT="${COMPONENT_DIR:-/usr/share/ibus/component}/${COMPONENT_NAME}"
 

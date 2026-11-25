@@ -25,15 +25,15 @@ if HERE not in sys.path:
 from tamil_core import Composer  # noqa: E402
 
 VERSION = "1.2"
-ENGINE_NAME = "tamil-custom"
+ENGINE_NAME = "eluthu"
 # keep in sync with <name> in component/tamil-custom.xml.in
-BUS_NAME = "org.local.IBus.TamilCustom"
+BUS_NAME = "org.local.IBus.Eluthu"
 
-LOG_PATH = os.path.expanduser(os.path.join("~", ".cache", "tamil-custom", "engine.log"))
+LOG_PATH = os.path.expanduser(os.path.join("~", ".cache", "eluthu", "engine.log"))
 
 
 def log(message):
-    """Append a line to ~/.cache/tamil-custom/engine.log (never raises)."""
+    """Append a line to ~/.cache/eluthu/engine.log (never raises)."""
     try:
         directory = os.path.dirname(LOG_PATH)
         if directory and not os.path.isdir(directory):
@@ -143,7 +143,7 @@ def selftest():
     if failures:
         print("%d/%d self-test cases failed" % (failures, len(cases)))
         return 1
-    print("tamil-custom: %d self-test cases passed" % len(cases))
+    print("eluthu: %d self-test cases passed" % len(cases))
     return 0
 
 

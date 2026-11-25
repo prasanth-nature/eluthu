@@ -6,14 +6,14 @@
 set -uo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ENGINE_NAME="tamil-custom"
-BUS_NAME="org.local.IBus.TamilCustom"
+ENGINE_NAME="eluthu"
+BUS_NAME="org.local.IBus.Eluthu"
 ENGINE="${HOME}/.local/share/tamil-keyboard/ibus-engine-tamil-custom"
 [ -x "/usr/local/share/tamil-keyboard/ibus-engine-tamil-custom" ] && \
   ENGINE="/usr/local/share/tamil-keyboard/ibus-engine-tamil-custom"
 SYS_COMPONENT="/usr/share/ibus/component/${ENGINE_NAME}.xml"
 USR_COMPONENT="${HOME}/.local/share/ibus/component/${ENGINE_NAME}.xml"
-LOG="${HOME}/.cache/tamil-custom/engine.log"
+LOG="${HOME}/.cache/eluthu/engine.log"
 
 pass() { printf 'PASS  %s\n' "$*"; }
 fail() { printf 'FAIL  %s\n' "$*"; }
