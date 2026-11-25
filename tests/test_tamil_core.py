@@ -98,9 +98,19 @@ check("caps + consonant", type_text("^a"), "க")
 check("caps + shift grantha", type_text("^~s"), "ஸ")
 
 # composer state is independent per instance
-c1, c2 = Composer(), Composer()
-c1.feed("a")
-check("isolated state", c2.feed("x"), "இ")
+check("isolated state", type_text("x"), "இ")
+
+# ------------------------------------------------- same vowel twice = long
+DOUBLE_CASES = [
+    ("zz", "ஆ"), ("xx", "ஈ"), ("cc", "ஊ"), ("vv", "ஏ"), ("bb", "ஓ"),
+    ("axx", "கீ"), ("sxx", "சீ"), ("wxx", "ழீ"), ("qxx", "வீ"),
+    ("ebb", "ளோ"), ("gcc", "பூ"),
+    ("azz", "கா"),             # the virama doubles too
+    ("zzz", "ஆஅ"),            # only one promotion, then a fresh vowel
+    ("a^x", "கீ"),             # Caps Lock still works
+]
+for keys, want in DOUBLE_CASES:
+    check("double %s" % keys, type_text(keys), want)
 
 # ------------------------------------------------------------------ report
 if FAILS:

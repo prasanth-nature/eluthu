@@ -13,6 +13,9 @@ Model
 * Caps Lock   : long vowel (நெடில்).  Caps + அ -> ஆ, and after a
                 consonant it becomes the long sign: வ + Caps+அ -> வா
 * Shift       : grantha / rare letters (ஸ ஷ ஜ ஹ க்ஷ) and a lone virama.
+* Doubling    : the same short vowel twice gives the long one.
+                அ + அ -> ஆ, இ + இ -> ஈ, க + இ + இ -> கீ, ள + ஒ + ஒ -> ளோ
+                The virama doubles too: க + அ + அ -> கா
 """
 
 VIRAMA = "\u0BCD"          # ்
@@ -106,19 +109,43 @@ def is_consonant(text):
     return text in CONSONANTS
 
 
+class Step(object):
+    """What the engine should do for one key press.
+
+    discard  clear the held preedit without committing it (the doubling case)
+    flush    commit the held preedit first
+    text     the text to output
+    preedit  True: hold ``text`` in the preedit; False: commit it
+    """
+
+    __slots__ = ("discard", "flush", "text", "preedit")
+
+    def __init__(self, discard, flush, text, preedit):
+        self.discard = discard
+        self.flush = flush
+        self.text = text
+        self.preedit = preedit
+
+    def __repr__(self):
+        return "Step(discard=%r, flush=%r, text=%r, preedit=%r)" % (
+            self.discard, self.flush, self.text, self.preedit)
+
+
 class Composer(object):
     """Turns single latin key presses into Tamil text.
 
-    ``feed()`` returns the string to commit, or ``None`` when the key is not
-    part of the layout (space, digits, arrows, ...) and should be passed
-    through to the application untouched.
+    ``feed()`` returns a :class:`Step`, or ``None`` when the key is not part
+    of the layout (space, digits, arrows, ...) and should be passed through
+    to the application untouched.
     """
 
     def __init__(self):
         self.pending = None  # consonant the next vowel sign may attach to
+        self.held = None     # (key, short, long) currently sitting in preedit
 
     def reset(self):
         self.pending = None
+        self.held = None
 
     # -- main entry point ---------------------------------------------------
     def feed(self, key, caps=False, shift=False):
@@ -128,27 +155,50 @@ class Composer(object):
         if not ("a" <= k <= "z"):
             return None
 
-        # Shift layer first: grantha letters and the lone virama
+        # --- the same short vowel again: promote it to the long form
+        if self.held is not None and k == self.held[0] and not shift:
+            long_form = self.held[2]
+            self.held = None
+            self.pending = None
+            return Step(discard=True, flush=False, text=long_form, preedit=False)
+
+        # --- Shift layer: grantha letters and the lone virama
         if shift and k in SHIFT:
             out = SHIFT[k]
+            self.held = None
             self.pending = None if out == VIRAMA else out
-            return out
+            return Step(discard=False, flush=True, text=out, preedit=False)
 
         if k not in BASE:
             return None
 
+        # --- a vowel key
         if k in INDEPENDENT:
-            index = 1 if caps else 0
-            if self.pending is not None:
-                sign = SIGNS[k][index]
-                self.pending = None
-                return sign
-            return INDEPENDENT[k][index]
+            want_long = bool(caps)
 
-        # consonant (or aytham, which nothing can attach to)
+            if self.pending is not None:
+                # attach to the consonant: sign, long sign, or the virama
+                sign = SIGNS[k][1 if want_long else 0]
+                self.pending = None
+                if want_long:
+                    # க + Caps அ = கா
+                    self.held = None
+                    return Step(False, True, sign, False)
+                self.held = (k, sign, SIGNS[k][1])
+                return Step(False, True, sign, True)
+
+            if want_long:
+                self.held = None
+                return Step(False, True, INDEPENDENT[k][1], False)
+
+            self.held = (k, INDEPENDENT[k][0], INDEPENDENT[k][1])
+            return Step(False, True, INDEPENDENT[k][0], True)
+
+        # --- a consonant (or aytham, which nothing can attach to)
         out = BASE[k]
+        self.held = None
         self.pending = None if out == AYTHAM else out
-        return out
+        return Step(False, True, out, False)
 
 
 def type_text(keys, caps=False):
@@ -168,11 +218,13 @@ def type_text(keys, caps=False):
         if ch == "~":
             shift_state = not shift_state
             continue
-        produced = composer.feed(ch, caps=cap_state, shift=shift_state)
-        if produced is None:
+        step = composer.feed(ch, caps=cap_state, shift=shift_state)
+        if step is None:
             composer.reset()
             out.append(ch)
         else:
-            out.append(produced)
+            if step.discard and out:
+                out.pop()          # the held vowel is replaced, not kept
+            out.append(step.text)
         shift_state = False
     return "".join(out)

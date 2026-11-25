@@ -185,6 +185,8 @@ from bottom left to top
 | 6 | `க்ஷ` behaves like a consonant | `⇧a` `x` → க்ஷி |
 | 7 | Caps Lock never changes consonants | `^a` → க |
 | 8 | Space, digits, punctuation, arrows and Ctrl/Alt clear the pending consonant and pass through | `a` `space` `z` → க அ |
+| 9 | The **same short vowel twice** gives the long vowel | `z` `z` → ஆ · `a` `x` `x` → கீ · `e` `b` `b` → ளோ |
+| 10 | The virama doubles too, giving the long ஆ | `a` `z` `z` → கா |
 
 > `^` in this README means "Caps Lock is on" — it is not a key you press.
 

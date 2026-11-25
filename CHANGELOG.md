@@ -12,6 +12,20 @@ Versioning: [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   The previous workflow called the installed-system diagnostic and ignored its
   failure, so it did not actually test the repository template.
 
+## [1.3.0] — 2026-11-25
+
+### Added
+
+- Typing the same short vowel twice now gives the long vowel (நெடில்):
+  அ + அ = ஆ, இ + இ = ஈ, க + இ + இ = கீ, ள + ஒ + ஒ = ளோ.
+- The virama doubles too: க + அ + அ = கா.
+- Caps Lock still works unchanged and still wins when used.
+
+### Changed
+
+- A vowel is held in the preedit for one keystroke, so it can be promoted
+  instead of duplicated. Any other key commits it first.
+
 ## [1.2.0] — 2026-11-12
 
 ### Fixed

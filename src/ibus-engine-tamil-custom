@@ -24,7 +24,7 @@ if HERE not in sys.path:
 
 from tamil_core import Composer  # noqa: E402
 
-VERSION = "1.2"
+VERSION = "1.3.0"
 ENGINE_NAME = "eluthu"
 # keep in sync with <name> in component/tamil-custom.xml.in
 BUS_NAME = "org.local.IBus.Eluthu"
@@ -65,14 +65,15 @@ def build_engine_class(IBus):
                 super(TamilEngine, self).__init__(**props)
             self.composer = Composer()
             self.seen_key_event = False
+            self._preedit = ""
             log("engine instance created at %s" % object_path)
 
         # -- key handling ---------------------------------------------------
         def do_process_key_event(self, keyval, keycode, state):
             if not self.seen_key_event:
                 self.seen_key_event = True
-                log("first key event reached the engine (keyval=%d state=%d)"
-                    % (keyval, state))
+                log("first key event reached the engine (keyval=%d keycode=%d state=%d)"
+                    % (keyval, keycode, state))
 
             if state & IBus.ModifierType.RELEASE_MASK:
                 return False
@@ -84,31 +85,75 @@ def build_engine_class(IBus):
                 | IBus.ModifierType.SUPER_MASK
             ):
                 self.composer.reset()
+                self._commit_preedit()
                 return False
 
             if keyval <= 0 or keyval >= 0x110000:
                 self.composer.reset()
+                self._commit_preedit()
                 return False
 
             char = chr(keyval)
             caps = bool(state & IBus.ModifierType.LOCK_MASK)
             shift = bool(state & IBus.ModifierType.SHIFT_MASK)
 
-            produced = self.composer.feed(char, caps=caps, shift=shift)
-            if produced is None:
+            step = self.composer.feed(char, caps=caps, shift=shift)
+            if step is None:
                 self.composer.reset()
+                self._commit_preedit()
                 return False
 
-            self.commit_text(IBus.Text.new_from_string(produced))
+            if step.discard:
+                self._clear_preedit()
+            elif step.flush:
+                self._commit_preedit()
+
+            if step.preedit:
+                self._show_preedit(step.text)
+            else:
+                self.commit_text(IBus.Text.new_from_string(step.text))
             return True
+
+        # -- preedit helpers -------------------------------------------------
+        def _show_preedit(self, text):
+            """Hold a vowel so the same key again can promote it to long."""
+            self._preedit = text
+            try:
+                self.update_preedit_string(
+                    IBus.Text.new_from_string(text), len(text), True)
+            except Exception:
+                # no preedit support: commit now, doubling then appends
+                self._preedit = ""
+                self.commit_text(IBus.Text.new_from_string(text))
+
+        def _commit_preedit(self):
+            if not self._preedit:
+                return
+            text, self._preedit = self._preedit, ""
+            try:
+                self.update_preedit_string(
+                    IBus.Text.new_from_string(""), 0, False)
+            except Exception:
+                pass
+            self.commit_text(IBus.Text.new_from_string(text))
+
+        def _clear_preedit(self):
+            self._preedit = ""
+            try:
+                self.update_preedit_string(
+                    IBus.Text.new_from_string(""), 0, False)
+            except Exception:
+                pass
 
         # -- housekeeping ---------------------------------------------------
         def do_focus_out(self):
             self.composer.reset()
+            self._commit_preedit()
             return False
 
         def do_reset(self):
             self.composer.reset()
+            self._commit_preedit()
             return False
 
     return TamilEngine
@@ -131,8 +176,13 @@ def selftest():
         ("^z", "\u0B86"),                       # ஆ
         ("^v", "\u0B8F"),                       # ஏ
         ("z", "\u0B85"),                        # அ
-        ("z^z", "\u0B85\u0B86"),                # அஆ
+        ("z^z", "\u0B86"),                      # அ, then Caps+அ -> ஆ
         ("a z", "\u0B95 \u0B85"),               # space clears the pending state
+        ("zz", "\u0B86"),                       # அ அ -> ஆ
+        ("xx", "\u0B88"),                       # இ இ -> ஈ
+        ("axx", "\u0B95\u0BC0"),                # க இ இ -> கீ
+        ("azz", "\u0B95\u0BBE"),                # க அ அ -> கா
+        ("ebb", "\u0BB3\u0BCB"),               # ள ஒ ஒ -> ளோ
     ]
     failures = 0
     for keys, expected in cases:
